@@ -16,10 +16,8 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        // Instead of using sessions, issue a Sanctum token
         $user = $request->user();
 
-        // Create token (name it as needed)
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
