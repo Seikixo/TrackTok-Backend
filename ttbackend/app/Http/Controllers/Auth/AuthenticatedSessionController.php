@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -14,17 +15,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        try
+        {
+            $request->authenticate();
+            $user = $request->user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+    
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => $user,
+            ]);
+        }
+        catch(AuthenticationException $e)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid Credentials',
+            ], 401);
+        }
 
-        $user = $request->user();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ]);
     }
 
     /**
