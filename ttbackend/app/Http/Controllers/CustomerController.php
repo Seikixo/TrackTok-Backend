@@ -10,6 +10,8 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\json;
+
 class CustomerController extends Controller
 {
     protected $customerRepository;
@@ -19,9 +21,32 @@ class CustomerController extends Controller
         $this->customerRepository = $customerRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try{
+            $customers = $this->customerRepository->getCustomers($request->input('search'));
+            return response()->json([
+                'success' => true,
+                'customers' => $customers
+            ]);
+        }
+        catch(QueryException $e)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Database error occurred while retrieving customers',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve customers.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+        
     }
 
     public function create()
@@ -34,7 +59,7 @@ class CustomerController extends Controller
         try
         {
             $validatedData = $request->validated();
-            $this->customerRepository->create([
+            $this->customerRepository->createCustomer([
                 'name' => $validatedData['name'],
                 'address' => $validatedData['address'],
                 'contact_number' => $validatedData['contact_number'],
@@ -44,14 +69,14 @@ class CustomerController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Customer created successfully',
-            ]);
+            ], 201);
         }
         catch(QueryException $e)
         {
             return response()->json([
                 'success' => false,
                 'message' => 'Database error occurred.',
-                'error' => $e->getMessage(), // remove or hide this in production
+                'error' => $e->getMessage(), 
             ], 500);
         }
         catch(Exception $e)
