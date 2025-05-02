@@ -31,10 +31,6 @@ class CustomerController extends Controller
         ], 200);
     }
 
-    public function create()
-    {
-
-    }
 
     public function store(CustomerRequest $request)
     {
@@ -61,13 +57,6 @@ class CustomerController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -80,8 +69,13 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy($id)
     {
-        //
+        $this->customerRepository->deleteCustomer($id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customer deleted successfully.'
+        ], 200);
     }
 }

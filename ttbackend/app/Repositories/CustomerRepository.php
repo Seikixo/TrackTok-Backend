@@ -23,4 +23,11 @@ class CustomerRepository{
         return Customer::create($data);
     }
 
+    public function deleteCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        
+        return $customer->delete();
+    }
+
 }
