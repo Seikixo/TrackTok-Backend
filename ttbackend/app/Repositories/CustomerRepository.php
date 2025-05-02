@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerRepository{
 
-    public function getCustomers(string|null $search = null, int $perPage = 10) {
+    public function getCustomers(string|null $search = null, int $perPage = 10) 
+    {
         $query = DB::table('customers');
 
         if($search)
@@ -19,8 +20,17 @@ class CustomerRepository{
         return $query->paginate($perPage);
     }
 
-    public function createCustomer(array $data) {
+    public function createCustomer(array $data) 
+    {
         return Customer::create($data);
+    }
+
+    public function updateCustomer($id, array $data)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->update($data);
+
+        return $customer;
     }
 
     public function deleteCustomer($id)

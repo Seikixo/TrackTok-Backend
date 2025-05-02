@@ -61,9 +61,22 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customer $customer)
+    public function update(CustomerRequest $request, $id)
     {
-        //
+        $validatedData = $request->validated();
+
+        $updatedCustomer = $this->customerRepository->updateCustomer($id, [
+            'name' => $validatedData['name'],
+            'address' => $validatedData['address'],
+            'contact_number' => $validatedData['contact_number'],
+            'email' => $validatedData['email']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer updated successfully',
+            'updatedCustomer' => $updatedCustomer,
+        ], 200);
     }
 
     /**
