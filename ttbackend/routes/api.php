@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     ->name('logout');
 
     Route::apiResource('customers', CustomerController::class);
+    
 });
 
 

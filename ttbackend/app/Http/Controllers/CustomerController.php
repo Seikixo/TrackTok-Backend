@@ -23,30 +23,12 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        try{
-            $customers = $this->customerRepository->getCustomers($request->input('search'));
-            return response()->json([
-                'success' => true,
-                'customers' => $customers
-            ]);
-        }
-        catch(QueryException $e)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Database error occurred while retrieving customers',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-        catch(Exception $e)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to retrieve customers.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $customers = $this->customerRepository->getCustomers($request->input('search'));
         
+        return response()->json([
+            'success' => true,
+            'customers' => $customers
+        ], 200);
     }
 
     public function create()
@@ -56,37 +38,19 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request)
     {
-        try
-        {
-            $validatedData = $request->validated();
-            $this->customerRepository->createCustomer([
-                'name' => $validatedData['name'],
-                'address' => $validatedData['address'],
-                'contact_number' => $validatedData['contact_number'],
-                'email' => $validatedData['email']
-            ]);
+        $validatedData = $request->validated();
+        
+        $this->customerRepository->createCustomer([
+            'name' => $validatedData['name'],
+            'address' => $validatedData['address'],
+            'contact_number' => $validatedData['contact_number'],
+            'email' => $validatedData['email']
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Customer created successfully',
-            ], 201);
-        }
-        catch(QueryException $e)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Database error occurred.',
-                'error' => $e->getMessage(), 
-            ], 500);
-        }
-        catch(Exception $e)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer created successfully',
+        ], 201);
     }
 
     /**
