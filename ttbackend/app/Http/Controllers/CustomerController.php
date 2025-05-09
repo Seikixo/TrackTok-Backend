@@ -23,7 +23,12 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $customers = $this->customerRepository->getCustomers($request->input('search'));
+        $customers = $this->customerRepository->getCustomers(
+            $request->input('search'),
+            $request->input('per_page', 10),
+            $request->input('sort_by', 'name'),
+            $request->input('sort_order', 'asc')
+        );
         
         return response()->json([
             'success' => true,

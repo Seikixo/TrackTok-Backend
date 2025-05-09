@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerRepository{
 
-    public function getCustomers(string|null $search = null, int $perPage = 10) 
+    public function getCustomers(string|null $search = null, int $perPage = 10, ?string $sortBy = 'name', string $sortOrder = 'asc') 
     {
         $query = DB::table('customers');
 
@@ -17,7 +17,8 @@ class CustomerRepository{
                 ->orWhere('email', 'like', "%{$search}%");
         }
 
-        return $query->paginate($perPage);
+        return $query->orderBy($sortBy, $sortOrder)
+                ->paginate($perPage);
     }
 
     public function createCustomer(array $data) 
