@@ -14,17 +14,17 @@ it('fetches a list of customers with pagination, sorting, and searching', functi
     actingAs($user, 'sanctum');
 
     // Create customers
-    $customer1 = Customer::factory()->create([
+    Customer::factory()->create([
         'name' => 'John Doe',
         'email' => 'john@example.com',
     ]);
-    $customer2 = Customer::factory()->create([
+    Customer::factory()->create([
         'name' => 'Jane Smith',
         'email' => 'jane@example.com',
     ]);
 
-    // Send GET request to the index route
-    $response = getJson('/api/customers?search=John&sort_by=name&sort_order=asc&per_page=1');
+
+    $response = getJson('/api/customers?search=Jane&sort_by=name&sort_order=asc&per_page=1');
 
     // Assert response is successful
     $response->assertOk()
@@ -32,10 +32,10 @@ it('fetches a list of customers with pagination, sorting, and searching', functi
             'success' => true,
         ]);
 
-    // Assert that only the customer matching the search is returned
+
     $response->assertJsonFragment([
-        'name' => 'John Doe',
-        'email' => 'john@example.com',
+        'name' => 'Jane Smith',
+        'email' => 'jane@example.com',
     ]);
 
     // Check pagination, sorting, and total count

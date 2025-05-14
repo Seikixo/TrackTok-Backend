@@ -5,7 +5,8 @@ namespace App\Repositories;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 
-class CustomerRepository{
+class CustomerRepository
+{
 
     public function getCustomers(string|null $search = null, int $perPage = 10, ?string $sortBy = 'name', string $sortOrder = 'asc') 
     {
