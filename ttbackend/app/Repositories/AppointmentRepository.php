@@ -18,6 +18,16 @@ class AppointmentRepository
             $query->whereRelation('customer', 'name', 'like', '%' . $params['search'] . '%');
         }
 
+        if (!empty($params['date']))
+        {
+            $query->whereDate('appointment_date', $params['date']);
+        }
+
+        if (!empty($params['status']))
+        {
+            $query->where('status', $params['status']);
+        }
+
         if (!empty($params['sort_by']))
         {
             $query->orderBy($params['sort_by'], $params['sort_order'] ?? 'asc');
@@ -25,7 +35,7 @@ class AppointmentRepository
 
         if (!empty($params['per_page']))
         {
-            $query->paginate($params['per_page'] ?? 10);
+            return $query->paginate($params['per_page'] ?? 10);
         }
 
         return $query->get();
