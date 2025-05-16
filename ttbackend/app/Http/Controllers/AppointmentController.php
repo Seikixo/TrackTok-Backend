@@ -61,19 +61,27 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(AppointmentRequest $request, $id)
     {
-        //
+        $validatedData = $request->validated();
+
+        $updatedAppointment = $this->appointmentRepository->updateAppointment($id, [
+            'customer_id' => $validatedData['customer_id'],
+            'appointment_date' => $validatedData['appointment_date'],
+            'start_time' => $validatedData['start_time'],
+            'end_time' => $validatedData['end_time'],
+            'total_price' => $validatedData['total_price'],
+            'status' => $validatedData['status'],
+            'notes' => $validatedData['notes'] ?? null,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Appointment updated successfully',
+            'updatedAppointment' => $updatedAppointment,
+        ], 200);
     }
 
     /**
