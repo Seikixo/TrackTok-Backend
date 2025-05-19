@@ -25,6 +25,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => $appointments->isEmpty() ? 'No appointments found.' : 'Appointment fetched successfully.',
             'appointments' => $appointments
         ], 200);
     }
@@ -48,7 +49,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Appointment created successfully',
+            'message' => 'Appointment created successfully.',
         ], 201);
     }
 
@@ -79,7 +80,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Appointment updated successfully',
+            'message' => 'Appointment updated successfully.',
             'updatedAppointment' => $updatedAppointment,
         ], 200);
     }
@@ -93,7 +94,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Appointment deleted successfully',
+            'message' => 'Appointment deleted successfully.'
         ], 200);
     }
 }
