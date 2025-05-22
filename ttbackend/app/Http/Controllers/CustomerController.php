@@ -32,6 +32,7 @@ class CustomerController extends Controller
         
         return response()->json([
             'success' => true,
+            'message' => $customers->isEmpty() ? 'No customers found.' : 'Customers fetched successfully.',
             'customers' => $customers
         ], 200);
     }
