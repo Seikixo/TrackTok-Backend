@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class CategoryRepository
 {
-  public function getCategories(array $params = [])
+    public function getCategories(array $params = [])
     {
         $query = Category::query();
 

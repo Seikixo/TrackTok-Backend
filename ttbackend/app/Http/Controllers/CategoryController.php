@@ -22,12 +22,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = $this->categoryRepository->getCategories(
-            $request->input('search'),
-            $request->input('per_page', 10),
-            $request->input('sort_by', 'name'),
-            $request->input('sort_order', 'asc')
-        );
+        $categories = $this->categoryRepository->getCategories($request->all());
 
         return response()->json([
             'success' => true,
@@ -58,7 +53,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Category created successfully',
+            'message' => 'Category created successfully.',
         ], 201);
     }
 
@@ -84,7 +79,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Category updated successfully',
+            'message' => 'Category updated successfully.',
             'category' => $updatedCategory
         ], 200);
     }
@@ -98,7 +93,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Category deleted successfully',
+            'message' => 'Category deleted successfully.',
             'category' => $deletedCategory
         ], 200);
     }
