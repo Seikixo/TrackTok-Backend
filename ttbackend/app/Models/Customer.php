@@ -16,4 +16,9 @@ class Customer extends Model
         'contact_number',
         'email',
     ];
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

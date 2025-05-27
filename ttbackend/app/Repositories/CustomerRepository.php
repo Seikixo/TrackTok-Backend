@@ -8,18 +8,24 @@ use Illuminate\Support\Facades\DB;
 class CustomerRepository
 {
 
-    public function getCustomers(string|null $search = null, int $perPage = 10, ?string $sortBy = 'name', string $sortOrder = 'asc') 
+    public function getCustomers(array $params = []) 
     {
-        $query = DB::table('customers');
+        $query = Customer::query()
+            ->with('appointments');
 
-        if($search)
-        {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%");
+        if (!empty($params['search'])) {
+            $query->where('name', 'like', '%' . $params['search'] . '%');
         }
 
-        return $query->orderBy($sortBy, $sortOrder)
-                ->paginate($perPage);
+        if (!empty($params['sort_by'])) {
+            $query->orderBy($params['sort_by'], $params['sort_order'] ?? 'asc');
+        }
+
+        if (!empty($params['per_page'])) {
+            return $query->paginate($params['per_page'] ?? 10);
+        }
+
+        return $query->get();
     }
 
     public function createCustomer(array $data) 

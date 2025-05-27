@@ -8,7 +8,8 @@ class CategoryRepository
 {
     public function getCategories(array $params = [])
     {
-        $query = Category::query();
+        $query = Category::query()
+            ->with('services');
 
         if (!empty($params['search'])) {
             $query->where('name', 'like', '%' . $params['search'] . '%');
