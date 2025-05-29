@@ -15,8 +15,10 @@ class CategoryRepository
             $query->where('name', 'like', '%' . $params['search'] . '%');
         }
 
-        if (!empty($params['sort_by'])) {
-            $query->orderBy($params['sort_by'], $params['sort_order'] ?? 'asc');
+        $sortable = ['name', 'created_at'];
+        if (!empty($params['sort_by']) && in_array($params['sort_by'], $sortable)) {
+            $order = in_array($params['sort_order'] ?? 'asc', ['asc', 'desc']) ? $params['sort_order'] : 'asc';
+            $query->orderBy($params['sort_by'], $order);
         }
 
         if (!empty($params['per_page'])) {

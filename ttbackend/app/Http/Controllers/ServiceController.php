@@ -4,32 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ServiceRequest;
+use App\Repositories\ServiceRepository;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $serviceRepository;
+
+    public function __construct(ServiceRepository $serviceRepository)
     {
-        //
+        $this->serviceRepository = $serviceRepository;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $services = $this->serviceRepository->getServices($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => $services->isEmpty() ? 'No services found.' : 'Services fetched successfully.',
+            'services' => $services
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        $this->serviceRepository->createService([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'duration' => $validatedData['duration'],
+            'category_id' => $validatedData['category_id']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Service created successfully.',
+        ], 201);
     }
 
     /**
@@ -41,26 +61,38 @@ class ServiceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(ServiceRequest $request, $id)
     {
-        //
+        $validatedData = $request->validated();
+
+        $updatedService = $this->serviceRepository->updateService($id, [
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'duration' => $validatedData['duration'],
+            'category_id' => $validatedData['category_id']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Service updated successfully.',
+            'service' => $updatedService
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy($id)
     {
-        //
+        $deletedService = $this->serviceRepository->deleteService($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Service deleted successfully.',
+            'service' => $deletedService
+        ], 200);
     }
 }
