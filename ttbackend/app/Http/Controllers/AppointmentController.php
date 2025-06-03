@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Repositories\AppointmentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
@@ -35,17 +36,7 @@ class AppointmentController extends Controller
      */
     public function store(AppointmentRequest $request)
     {
-        $validatedData = $request->validated();
-
-        $this->appointmentRepository->createAppointment([
-            'customer_id' => $validatedData['customer_id'],
-            'appointment_date' => $validatedData['appointment_date'],
-            'start_time' => $validatedData['start_time'],
-            'end_time' => $validatedData['end_time'],
-            'total_price' => $validatedData['total_price'],
-            'status' => $validatedData['status'],
-            'notes' => $validatedData['notes'] ?? null,
-        ]);
+        $appointment = $this->appointmentRepository->createAppointment($request->validated());
 
         return response()->json([
             'success' => true,

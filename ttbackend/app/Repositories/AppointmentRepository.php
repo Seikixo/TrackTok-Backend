@@ -8,6 +8,26 @@ use Illuminate\Support\Facades\DB;
 class AppointmentRepository
 {
 
+    public function createAppointment(array $data)
+    {
+        return Appointment::create($data);
+    }
+
+    public function updateAppointment($id, array $data)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->update($data);
+
+        return $appointment;
+    }
+
+    public function deleteAppointment($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        return $appointment->delete();
+    }
+
     public function getAppoitments(array $params = [])
     {
         $query = Appointment::query();
@@ -38,25 +58,5 @@ class AppointmentRepository
         }
 
         return $query->get();
-    }
-
-    public function createAppointment(array $data)
-    {
-        return Appointment::create($data);
-    }
-
-    public function updateAppointment($id, array $data)
-    {
-        $appointment = Appointment::findOrFail($id);
-        $appointment->update($data);
-
-        return $appointment;
-    }
-
-    public function deleteAppointment($id)
-    {
-        $appointment = Appointment::findOrFail($id);
-
-        return $appointment->delete();
     }
 }

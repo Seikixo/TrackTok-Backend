@@ -38,7 +38,7 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validated();
         
-        $this->categoryRepository->createCategory([
+        $category =  $this->categoryRepository->createCategory([
             'name' => $validatedData['name'],
             'description' => $validatedData['description']
         ]);
