@@ -34,16 +34,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (Throwable $e, Request $request) {
 
-            if ($request->is('api/*'))
-            {
-                return true;
-            }
-
-            if ($request->ajax())
-            {
-                return true;
-            }
-
             if (!$request->expectsJson() && !$request->is('api/*'))
             {
                 return;

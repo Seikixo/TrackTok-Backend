@@ -36,13 +36,7 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         $validatedData = $request->validated();
-        
-        $this->customerRepository->createCustomer([
-            'name' => $validatedData['name'],
-            'address' => $validatedData['address'],
-            'contact_number' => $validatedData['contact_number'],
-            'email' => $validatedData['email']
-        ]);
+        $this->customerRepository->createCustomer($validatedData);
 
         return response()->json([
             'success' => true,
@@ -64,13 +58,7 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, $id)
     {
         $validatedData = $request->validated();
-
-        $updatedCustomer = $this->customerRepository->updateCustomer($id, [
-            'name' => $validatedData['name'],
-            'address' => $validatedData['address'],
-            'contact_number' => $validatedData['contact_number'],
-            'email' => $validatedData['email']
-        ]);
+        $updatedCustomer = $this->customerRepository->updateCustomer($id, $validatedData);
 
         return response()->json([
             'success' => true,

@@ -37,11 +37,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $validatedData = $request->validated();
-        
-        $category =  $this->categoryRepository->createCategory([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description']
-        ]);
+        $this->categoryRepository->createCategory($validatedData);
 
         return response()->json([
             'success' => true,
@@ -63,11 +59,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
         $validatedData = $request->validated();
-
-        $updatedCategory = $this->categoryRepository->updateCategory($id, [
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description']
-        ]);
+        $updatedCategory = $this->categoryRepository->updateCategory($id, $validatedData);
 
         return response()->json([
             'success' => true,

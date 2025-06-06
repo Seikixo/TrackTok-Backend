@@ -36,7 +36,8 @@ class AppointmentController extends Controller
      */
     public function store(AppointmentRequest $request)
     {
-        $appointment = $this->appointmentRepository->createAppointment($request->validated());
+        $validatedData = $request->validated();
+        $this->appointmentRepository->createAppointment($validatedData);
 
         return response()->json([
             'success' => true,
@@ -58,16 +59,7 @@ class AppointmentController extends Controller
     public function update(AppointmentRequest $request, $id)
     {
         $validatedData = $request->validated();
-
-        $updatedAppointment = $this->appointmentRepository->updateAppointment($id, [
-            'customer_id' => $validatedData['customer_id'],
-            'appointment_date' => $validatedData['appointment_date'],
-            'start_time' => $validatedData['start_time'],
-            'end_time' => $validatedData['end_time'],
-            'total_price' => $validatedData['total_price'],
-            'status' => $validatedData['status'],
-            'notes' => $validatedData['notes'] ?? null,
-        ]);
+        $updatedAppointment = $this->appointmentRepository->updateAppointment($id, $validatedData);
 
         return response()->json([
             'success' => true,

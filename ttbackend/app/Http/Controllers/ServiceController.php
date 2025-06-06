@@ -37,14 +37,7 @@ class ServiceController extends Controller
     public function store(ServiceRequest $request)
     {
         $validatedData = $request->validated();
-
-        $this->serviceRepository->createService([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'duration' => $validatedData['duration'],
-            'category_id' => $validatedData['category_id']
-        ]);
+        $this->serviceRepository->createService($validatedData);
 
         return response()->json([
             'success' => true,
@@ -67,13 +60,7 @@ class ServiceController extends Controller
     {
         $validatedData = $request->validated();
 
-        $updatedService = $this->serviceRepository->updateService($id, [
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'duration' => $validatedData['duration'],
-            'category_id' => $validatedData['category_id']
-        ]);
+        $updatedService = $this->serviceRepository->updateService($id, $validatedData);
 
         return response()->json([
             'success' => true,
