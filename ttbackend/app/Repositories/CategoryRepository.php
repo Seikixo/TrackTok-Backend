@@ -7,27 +7,6 @@ use App\Models\Category;
 class CategoryRepository
 {
 
-    public function createCategory(array $data)
-    {
-        return Category::create($data);
-    }
-
-    public function updateCategory($id, array $data)
-    {
-        $category = Category::findOrFail($id);
-        $category->update($data);
-
-        return $category;
-    }
-
-    public function deleteCategory($id)
-    {
-        $category = Category::findOrFail($id);
-        $category->delete();
-
-        return $category;
-    }
-
     public function getCategories(array $params = [])
     {
         $query = Category::query()
@@ -48,5 +27,26 @@ class CategoryRepository
         }
 
         return $query->get();
+    }
+
+    public function createCategory(array $data)
+    {
+        return Category::create($data);
+    }
+
+    public function updateCategory($id, array $data)
+    {
+        $category = Category::findOrFail($id);
+        $category->update($data);
+
+        return $category;
+    }
+
+    public function deleteCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return $category;
     }
 }

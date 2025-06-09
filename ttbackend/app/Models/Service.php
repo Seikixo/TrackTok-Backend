@@ -21,4 +21,12 @@ class Service extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function appointments()
+    {
+        return $this->belongsToMany(Appointment::class, 'appointment_services')
+                    ->withPivot(['service_quantity', 'total_price_at_appointment'])
+                    ->withTimestamps();
+
+    }
 }

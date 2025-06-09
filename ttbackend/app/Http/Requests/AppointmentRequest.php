@@ -28,7 +28,12 @@ class AppointmentRequest extends FormRequest
             'end_time' => 'required|date_format:H:i|after:start_time',
             'total_price' => 'required|numeric|min:0',
             'status' => 'required|in:Scheduled,Confirmed,Completed,Cancelled',
-            'notes' => 'nullable|string|max:1000'
+            'notes' => 'nullable|string|max:1000',
+
+            'services' => 'required|array|min:1',
+            'services.*.service_id' => 'required|exists:services,id',
+            'services.*.service_quantity' => 'required|integer|min:1',
+            'services.*.total_price_at_appointment' => 'required|numeric|min:0',
         ];
     }
 }
