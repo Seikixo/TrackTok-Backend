@@ -44,14 +44,11 @@ class AppointmentRepository
 
     public function createAppointment(array $data)
     {
-        // Extract services and remove them from main data
-        $services = $data['services'];
+        $services = $data['services'] ?? null;
         unset($data['services']);
 
-        // Create the appointment
         $appointment = Appointment::create($data);
 
-        // Prepare data for pivot table
         $pivotData = [];
 
         foreach ($services as $service) {
@@ -70,8 +67,21 @@ class AppointmentRepository
 
     public function updateAppointment($id, array $data)
     {
+        $services = $data['services'] ?? null;
+        unset($data['services']);
+
         $appointment = Appointment::findOrFail($id);
         $appointment->update($data);
+
+        $pivotData = [];
+        foreach ($services as $service) {
+            $pivotData[$service['service_id']] = [
+                'service_quantity' => $service['service_quantity'],
+                'total_price_at_appointment' => $service['total_price_at_appointment'],
+            ];
+        }
+
+        $appointment->services()->sync($pivotData);
 
         return $appointment;
     }
