@@ -33,7 +33,6 @@ class AppointmentRequest extends FormRequest
             'services' => 'nullable|array',
             'services.*.service_id' => 'required_with:services|exists:services,id',
             'services.*.service_quantity' => 'required_with:services|integer|min:1',
-            'services.*.total_price_at_appointment' => 'required_with:services|numeric|min:0',
         ];
     }
 }

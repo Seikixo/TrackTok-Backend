@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\DB;
 class AppointmentRepository
 {
 
-    public function getAppoitments(array $params = [])
+    public function getAppointments(array $params = [])
     {
-        $query = Appointment::query();
+        $query = Appointment::query()
+            ->with(['services', 'customer']);
 
         if (!empty($params['search']))
         {
@@ -54,7 +55,6 @@ class AppointmentRepository
         foreach ($services as $service) {
             $pivotData[$service['service_id']] = [
                 'service_quantity' => $service['service_quantity'],
-                'total_price_at_appointment' => $service['total_price_at_appointment'],
             ];
         }
 
@@ -77,7 +77,6 @@ class AppointmentRepository
         foreach ($services as $service) {
             $pivotData[$service['service_id']] = [
                 'service_quantity' => $service['service_quantity'],
-                'total_price_at_appointment' => $service['total_price_at_appointment'],
             ];
         }
 

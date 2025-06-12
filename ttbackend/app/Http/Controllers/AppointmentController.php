@@ -22,7 +22,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $appointments = $this->appointmentRepository->getAppoitments($request->all());
+        $appointments = $this->appointmentRepository->getAppointments($request->all());
 
         return response()->json([
             'success' => true,
