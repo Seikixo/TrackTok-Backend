@@ -25,7 +25,7 @@ class Service extends Model
     public function appointments()
     {
         return $this->belongsToMany(Appointment::class, 'appointment_services')
-                    ->withPivot(['service_quantity', 'total_price_at_appointment'])
+                    ->withPivot(['service_quantity', 'total_price_of_services'])
                     ->withTimestamps();
 
     }

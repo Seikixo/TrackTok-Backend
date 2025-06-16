@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('appointment_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_id')->constrained()->cascadeOnDelete();
             $table->integer('service_quantity')->default(1);
-            $table->decimal('total_price_at_appointment', 10, 2);
+            $table->decimal('total_price_of_services', 10, 2);
             $table->timestamps();
         });
     }

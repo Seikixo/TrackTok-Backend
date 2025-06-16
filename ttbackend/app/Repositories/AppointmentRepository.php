@@ -3,10 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\Appointment;
+use App\Services\AppointmentService;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentRepository
 {
+    protected $appointmentService;
+
+    public function __construct(AppointmentService $appointmentService)
+    {
+        $this->appointmentService = $appointmentService;
+    }
 
     public function getAppointments(array $params = [])
     {
@@ -55,6 +62,7 @@ class AppointmentRepository
         foreach ($services as $service) {
             $pivotData[$service['service_id']] = [
                 'service_quantity' => $service['service_quantity'],
+                'total_price_of_services' => $this->appointmentService->calculateTotalPriceOfService($service),
             ];
         }
 
@@ -77,6 +85,7 @@ class AppointmentRepository
         foreach ($services as $service) {
             $pivotData[$service['service_id']] = [
                 'service_quantity' => $service['service_quantity'],
+                'total_price_of_services' => $this->appointmentService->calculateTotalPriceOfService($service)
             ];
         }
 
