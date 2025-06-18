@@ -55,6 +55,9 @@ class AppointmentRepository
         $services = $data['services'] ?? null;
         unset($data['services']);
 
+        $totalPrice = $this->appointmentService->calculateTotalPrice($services);
+        $data['total_price'] = $totalPrice;
+
         $appointment = Appointment::create($data);
 
         $pivotData = [];
@@ -77,6 +80,9 @@ class AppointmentRepository
     {
         $services = $data['services'] ?? null;
         unset($data['services']);
+
+        $totalPrice = $this->appointmentService->calculateTotalPrice($services);
+        $data['total_price'] = $totalPrice;
 
         $appointment = Appointment::findOrFail($id);
         $appointment->update($data);

@@ -26,7 +26,6 @@ class AppointmentRequest extends FormRequest
             'appointment_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'total_price' => 'required|numeric|min:0',
             'status' => 'required|in:Scheduled,Confirmed,Completed,Cancelled',
             'notes' => 'nullable|string|max:1000',
 
