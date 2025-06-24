@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendAppointmentConfirmedEmail;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
 use Illuminate\Support\Facades\DB;
@@ -72,6 +73,8 @@ class AppointmentRepository
         // Attach services with pivot data
         $appointment->services()->attach($pivotData);
 
+
+
         return $appointment;
     }                                                       
 
@@ -84,8 +87,12 @@ class AppointmentRepository
         $totalPrice = $this->appointmentService->calculateTotalPrice($services);
         $data['total_price'] = $totalPrice;
 
-        $appointment = Appointment::findOrFail($id);
+        $appointment = Appointment::with(['customer', 'services'])->findOrFail($id);
         $appointment->update($data);
+        if($appointment->status == 'Confirmed')
+        {
+            SendAppointmentConfirmedEmail::dispatch($appointment);
+        }
 
         $pivotData = [];
         foreach ($services as $service) {
