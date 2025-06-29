@@ -9,7 +9,7 @@ class PaymentRepository
     public function getPayments(array $params = [])
     {
         $query = Payment::query()
-            ->with('appointment');
+            ->with('appointment.customer');
 
         if (!empty($params['search'])) {
             $query->whereHas('appointment.customer', function ($q) use ($params) {
