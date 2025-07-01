@@ -3,9 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Payment;
+use App\Services\PaymentService;
 
 class PaymentRepository
 {
+    protected $paymentService;
+    public function __construct(PaymentService $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
+
     public function getPayments(array $params = [])
     {
         $query = Payment::query()
@@ -40,7 +47,14 @@ class PaymentRepository
 
     public function createPayment(array $data)
     {
-        return Payment::create($data);
+        $appointment_id = $data['appointment_id'];
+        $amount = $data['amount'];
+
+        $status = $this->paymentService->categorizePayment($appointment_id, $amount);
+        $data['status'] = $status;
+
+        $payment = Payment::create($data);
+        return $payment;
     }
 
     public function updatePayment($id, array $data)

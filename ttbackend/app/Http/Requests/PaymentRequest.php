@@ -26,7 +26,6 @@ class PaymentRequest extends FormRequest
             'date' => 'required|date',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|in:Cash,Credit Card,Debit Card,Online',
-            'status' => 'required|string|in:Pending,Completed,Refund,Failed',
         ];
     }
 }

@@ -19,7 +19,7 @@ class AppointmentRepository
     public function getAppointments(array $params = [])
     {
         $query = Appointment::query()
-            ->with(['services', 'customer']);
+            ->with(['services', 'customer', 'payments']);
 
         if (!empty($params['search']))
         {
