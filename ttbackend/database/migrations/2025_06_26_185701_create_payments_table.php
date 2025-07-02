@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->decimal('amount', 10, 2);
             $table->enum('payment_method', ['Cash', 'Credit Card', 'Debit Card', 'Online'])->default('Cash');
-            $table->enum('status', ['Pending', 'Completed', 'Refund', 'Failed'])->default('Pending');
+            $table->enum('status', ['Pending', 'Completed', 'Refund', 'Failed', 'Overpaid'])->default('Pending');
             $table->timestamps();
         });
     }

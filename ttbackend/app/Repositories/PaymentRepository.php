@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendPaymentStatusEmailJob;
 use App\Models\Payment;
 use App\Services\PaymentService;
 
@@ -54,6 +55,7 @@ class PaymentRepository
         $data['status'] = $status;
 
         $payment = Payment::create($data);
+        SendPaymentStatusEmailJob::dispatch($payment);
         return $payment;
     }
 

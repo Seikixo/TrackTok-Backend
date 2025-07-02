@@ -3,11 +3,11 @@
 namespace App\Jobs;
 
 use App\Models\Payment;
-use App\Notifications\PaymentCompleted;
+use App\Notifications\PaymentStatusNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class SendPaymentCompletedEmail implements ShouldQueue
+class SendPaymentStatusEmailJob implements ShouldQueue
 {
     use Queueable;
 
@@ -25,6 +25,7 @@ class SendPaymentCompletedEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->payment->appointment->customer->notify(new PaymentCompleted($this->payment));
+        $loadPayment = $this->payment->load('appointment.customer');
+        $this->payment->appointment->customer->notify(new PaymentStatusNotification($loadPayment));
     }
 }

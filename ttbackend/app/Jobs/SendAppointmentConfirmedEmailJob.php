@@ -3,14 +3,14 @@
 namespace App\Jobs;
 
 use App\Models\Appointment;
-use App\Notifications\AppointmentConfirmed;
+use App\Notifications\AppointmentConfirmedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SendAppointmentConfirmedEmail implements ShouldQueue
+class SendAppointmentConfirmedEmailJob implements ShouldQueue
 {
      use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $appointment;
@@ -27,6 +27,6 @@ class SendAppointmentConfirmedEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->appointment->customer->notify(new AppointmentConfirmed($this->appointment));
+        $this->appointment->customer->notify(new AppointmentConfirmedNotification($this->appointment));
     }
 }

@@ -2,21 +2,22 @@
 
 namespace App\Notifications;
 
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentCompleted extends Notification
+class PaymentStatusNotification extends Notification
 {
     use Queueable;
-
+    protected $payment;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Payment $payment)
     {
-        //
+        $this->payment = $payment;
     }
 
     /**
@@ -34,10 +35,13 @@ class PaymentCompleted extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+
         $mail = (new MailMessage)
-            ->subject('Payment Completed')
-            ->greeting('Hello ' . $notifiable->name . '!')
-            ->line('Your payment has been successfully completed.')
+            ->subject('Payment Status')
+            ->greeting('Hello ' . $this->payment->appointment->customer->name . '!')
+            ->line('📅 Date of Payment: ' . $this->payment->date)
+            ->line('💰 Amount: ' . '₱' . $this->payment->amount)
+            ->line('Your current payment status is ' . $this->payment->status)
             ->line('Thank you for your payment!');
 
         return $mail;

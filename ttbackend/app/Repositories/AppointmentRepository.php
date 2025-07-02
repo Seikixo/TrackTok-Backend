@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Jobs\SendAppointmentConfirmedEmail;
+use App\Jobs\SendAppointmentConfirmedEmailJob;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
 use Illuminate\Support\Facades\DB;
@@ -87,12 +87,8 @@ class AppointmentRepository
         $totalPrice = $this->appointmentService->calculateTotalPrice($services);
         $data['total_price'] = $totalPrice;
 
-        $appointment = Appointment::with(['customer', 'services'])->findOrFail($id);
+        $appointment = Appointment::findOrFail($id);
         $appointment->update($data);
-        if($appointment->status == 'Confirmed')
-        {
-            SendAppointmentConfirmedEmail::dispatch($appointment);
-        }
 
         $pivotData = [];
         foreach ($services as $service) {
@@ -103,6 +99,12 @@ class AppointmentRepository
         }
 
         $appointment->services()->sync($pivotData);
+
+        $appointment->load('customer', 'payments');
+        if($appointment->status == 'Confirmed')
+        {
+            SendAppointmentConfirmedEmailJob::dispatch($appointment);
+        }
 
         return $appointment;
     }
