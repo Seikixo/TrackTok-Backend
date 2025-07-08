@@ -46,13 +46,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('customers', CustomerController::class);
     
-    Route::apiResource('appointments', AppointmentController::class);
+    Route::get('/appointments', [AppointmentController::class, 'index']);
+    Route::post('/appointment', [AppointmentController::class, 'store'])->middleware('throttle:5,1');
+    Route::put('/appointment/{id}', [AppointmentController::class, 'update']);
+    Route::delete('/appointment/{id}', [AppointmentController::class, 'destroy']);
 
     Route::apiResource('categories', CategoryController::class);
 
     Route::apiResource('services', ServiceController::class);
 
-    Route::apiResource('payments', PaymentController::class);
+    Route::get('/payments', [PaymentController::class, 'index']);
+    Route::post('/payment', [PaymentController::class, 'store'])->middleware('throttle:3,1');
+    Route::put('/payment/{id}', [PaymentController::class, 'update']);
+    Route::delete('/payment/{id}', [PaymentController::class, 'destroy']);
 });
 
 
