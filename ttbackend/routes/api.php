@@ -12,6 +12,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -59,6 +61,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payment', [PaymentController::class, 'store'])->middleware('throttle:3,1');
     Route::put('/payment/{id}', [PaymentController::class, 'update']);
     Route::delete('/payment/{id}', [PaymentController::class, 'destroy']);
+});
+
+Route::get('/redis-test', function () {
+    Cache::store('redis')->put('test-key', 'Hello Redis', 10); // Store for 10 seconds
+
+    $value = Cache::store('redis')->get('test-key');
+
+    return response()->json([
+        'status' => $value ? 'success' : 'failed',
+        'value' => $value,
+    ]);
 });
 
 
