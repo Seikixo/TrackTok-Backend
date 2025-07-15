@@ -10,7 +10,7 @@ class CategoryRepository
 
     public function getCategories(array $params = [])
     {
-        $hasSearchOrSort = !empty($params['search']) || !empty($params['sor_by']) || !empty($params['per_page']);
+        $hasSearchOrSort = !empty($params['search']) || !empty($params['sort_by']) || !empty($params['per_page']);
         if($hasSearchOrSort)
         {
             logger('Fetching categories from DB due to search/sort/pagination.');
@@ -33,7 +33,7 @@ class CategoryRepository
 
         }
         logger('Fetching categories from cache.');       
-        return Cache::remember('categories_with_services', 3600, function() {
+        return Cache::remember('categories_with_services', 10, function() {
             logger('Storing categories into cache (no search/sort).');
             return Category::with('services')->get();
         });

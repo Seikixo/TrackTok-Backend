@@ -8,11 +8,10 @@ use App\Services\PaymentService;
 
 class PaymentRepository
 {
-    protected $paymentService;
-    public function __construct(PaymentService $paymentService)
-    {
-        $this->paymentService = $paymentService;
-    }
+
+    public function __construct(
+        private PaymentService $paymentService
+    ){}
 
     public function getPayments(array $params = [])
     {

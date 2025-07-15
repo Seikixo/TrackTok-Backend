@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class AppointmentRepository
 {
-    protected $appointmentService;
 
-    public function __construct(AppointmentService $appointmentService)
-    {
-        $this->appointmentService = $appointmentService;
-    }
+
+    public function __construct(
+        private AppointmentService $appointmentService
+    ){}
 
     public function getAppointments(array $params = [])
     {
