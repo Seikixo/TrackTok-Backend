@@ -9,8 +9,10 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -56,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', CategoryController::class);
 
     Route::apiResource('services', ServiceController::class);
+
+    Route::apiResource('organizations', OrganizationController::class);
 
     Route::get('/payments', [PaymentController::class, 'index']);
     Route::post('/payment', [PaymentController::class, 'store'])->middleware('throttle:3,1');
